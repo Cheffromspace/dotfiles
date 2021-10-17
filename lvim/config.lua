@@ -109,7 +109,7 @@ parser_config.apex = {
     url = "https://github.com/tree-sitter/tree-sitter-java",
     files = {"src/parser.c"}
   },
-  filetype = "ps1",
+  filetype = "apex",
   used_by = { ".cls", ".trigger", ".apex"}
 }
 

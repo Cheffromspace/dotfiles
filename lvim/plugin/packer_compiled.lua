@@ -83,6 +83,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/jonflatt/.local/share/lunarvim/site/pack/packer/start/LuaSnip"
   },
+  ["apex-syntax.vim"] = {
+    loaded = true,
+    path = "/home/jonflatt/.local/share/lunarvim/site/pack/packer/start/apex-syntax.vim"
+  },
   ["barbar.nvim"] = {
     config = { "\27LJ\2\2B\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\25lvim.core.bufferline\frequire\0" },
     loaded = false,

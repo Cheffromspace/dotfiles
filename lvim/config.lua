@@ -81,7 +81,7 @@ if not lspconfig.apexls then
   configs.apexls = {
     default_config = {
       cmd = apexCmd,
-      filetypes = {'apex'},
+      filetypes = {'apexcode'},
       root_dir = require("lspconfig/util").root_pattern(".git", "package.json"),
       settings = {}
     }
@@ -117,10 +117,11 @@ parser_config.apex = {
 lvim.plugins = {
   { 'chrisbra/csv.vim' },
   {'airblade/vim-gitgutter'},
-  {'lewis6991/gitsigns.nvim'}
+  {'lewis6991/gitsigns.nvim'},
+  {'azorng/apex-syntax.vim'}
 }
 
 --Autocommands (https://neovim.io/doc/user/autocmd.html)
-lvim.autocommands.custom_groups = {
-  { "BufWinEnter", "*.cls", "setlocal filetype=apex syntax=java tabstop=4 softtabstop=4 shiftwidth=4 cindent"}
-}
+-- lvim.autocommands.custom_groups = {
+--   { "BufWinEnter", "*.cls", "setlocal filetype=apex syntax=java tabstop=4 softtabstop=4 shiftwidth=4 cindent"}
+-- }

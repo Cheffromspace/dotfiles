@@ -104,24 +104,25 @@ parser_config.powershell = {
   used_by = { "psm1", "psd1", "pssc", "psxml", "cdxml" }
 }
 
-parser_config.apex = {
-  install_info = {
-    url = "https://github.com/tree-sitter/tree-sitter-java",
-    files = {"src/parser.c"}
-  },
-  filetype = "apex",
-  used_by = { ".cls", ".trigger", ".apex"}
-}
+-- parser_config.apex = {
+--   install_info = {
+--     url = "https://github.com/tree-sitter/tree-sitter-java",
+--     files = {"src/parser.c"}
+--   },
+--   filetype = "apexcode",
+--   used_by = { ".cls", ".trigger", ".apex"}
+-- }
+parser_config.java.used_by = "apexcode"
 
 -- Additional Plugins
 lvim.plugins = {
   { 'chrisbra/csv.vim' },
   {'airblade/vim-gitgutter'},
   {'lewis6991/gitsigns.nvim'},
-  {'azorng/apex-syntax.vim'}
+  -- {'azorng/apex-syntax.vim'}
 }
 
 --Autocommands (https://neovim.io/doc/user/autocmd.html)
--- lvim.autocommands.custom_groups = {
---   { "BufWinEnter", "*.cls", "setlocal filetype=apex syntax=java tabstop=4 softtabstop=4 shiftwidth=4 cindent"}
--- }
+lvim.autocommands.custom_groups = {
+  { "BufWinEnter", "*.cls", "setlocal filetype=apexcode syntax=apex tabstop=4 softtabstop=4 shiftwidth=4 cindent"}
+}

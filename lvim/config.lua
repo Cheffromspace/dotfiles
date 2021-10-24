@@ -12,12 +12,13 @@ an executable
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = true
-lvim.colorscheme = "onedarker"
+lvim.colorscheme = "tokyonight"
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+lvim.keys.normal_mode["<leader>,"] = ':lua require"nvim-sfdx"<cr>'
 -- unmap a default keymapping
 -- lvim.keys.normal_mode["<C-Up>"] = ""
 -- edit a default keymapping
@@ -38,15 +39,15 @@ lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 
 -- Use which-key to add extra bindings with the leader-key prefix
 -- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
--- lvim.builtin.which_key.mappings["t"] = {
---   name = "+Trouble",
---   r = { "<cmd>Trouble lsp_references<cr>", "References" },
---   f = { "<cmd>Trouble lsp_definitions<cr>", "Definitions" },
---   d = { "<cmd>Trouble lsp_document_diagnostics<cr>", "Diagnostics" },
---   q = { "<cmd>Trouble quickfix<cr>", "QuickFix" },
---   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
---   w = { "<cmd>Trouble lsp_workspace_diagnostics<cr>", "Diagnostics" },
--- }
+lvim.builtin.which_key.mappings["t"] = {
+  name = "+Trouble",
+  r = { "<cmd>Trouble lsp_references<cr>", "References" },
+  f = { "<cmd>Trouble lsp_definitions<cr>", "Definitions" },
+  d = { "<cmd>Trouble lsp_document_diagnostics<cr>", "Diagnostics" },
+  q = { "<cmd>Trouble quickfix<cr>", "QuickFix" },
+  l = { "<cmd>Trouble loclist<cr>", "LocationList" },
+  w = { "<cmd>Trouble lsp_workspace_diagnostics<cr>", "Diagnostics" },
+}
 
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
@@ -54,6 +55,8 @@ lvim.builtin.dashboard.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.show_icons.git = 0
+
+
 
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
@@ -73,6 +76,19 @@ lvim.builtin.treesitter.ensure_installed = {
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
 
+lvim.builtin.cmp.sources = {
+  {name = "gh_issues"},
+  {name = "nvim_lua"},
+  {name = "path"},
+  {name = "luasnip"},
+  {name = "buffer", keyword_length = 4 }
+}
+
+lvim.builtin.cmp.experimental = {
+  native_menu = false,
+  ghost_menu = true
+}
+
 local lspconfig = require'lspconfig'
 local configs = require'lspconfig/configs'
 local apexCmd = { '/usr/bin/java','-cp', '/home/jonflatt/languageServers/Apex/apex-jorje-lsp.jar', '-Ddebug.internal.errors=true', 'apex.jorje.lsp.ApexLanguageServerLauncher' }
@@ -81,7 +97,7 @@ if not lspconfig.apexls then
   configs.apexls = {
     default_config = {
       cmd = apexCmd,
-      filetypes = {'apexcode'},
+      filetypes = {'apex'},
       root_dir = require("lspconfig/util").root_pattern(".git", "package.json"),
       settings = {}
     }
@@ -95,34 +111,46 @@ lspconfig.powershell_es.setup{
 }
 --Powershell treesitter
 local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-parser_config.powershell = {
-  install_info = {
-    url = "https://github.com/jrsconfitto/tree-sitter-powershell",
-    files = {"src/parser.c"}
-  },
-  filetype = "ps1",
-  used_by = { "psm1", "psd1", "pssc", "psxml", "cdxml" }
-}
-
--- parser_config.apex = {
+parser_config.java.used_by = "apex"
+-- parser_config.powershell = {
 --   install_info = {
---     url = "https://github.com/tree-sitter/tree-sitter-java",
+--     url = "https://github.com/jrsconfitto/tree-sitter-powershell",
 --     files = {"src/parser.c"}
 --   },
---   filetype = "apexcode",
---   used_by = { ".cls", ".trigger", ".apex"}
+--   filetype = "ps1",
+--   used_by = { "psm1", "psd1", "pssc", "psxml", "cdxml" }
 -- }
-parser_config.java.used_by = "apexcode"
+
+-- local query = vim.treesitter.parse_query('java', [[
+--   -- (method_declaratio
+--   --   (modifiers
+--   --     (marker_annotation
+--   --       name: (identifier) @annotation
+--   --         (#match? @annotation "^[iI][sS][tT][eE][sS][tT]$")))
+--   --   name: (identifier) @method (#offset! @method))
+--   -- ]])
+-- parser_config.apex = {
+--   install_info = {
+--     url = "~/source/tree-sitter-apex/",
+--     files = {"src/parser.c"}
+--   },
+--   filetype = "apex",
+--   used_by = { "apex" }
+-- }
+-- parser_config.java.used_by = {'apex'}
+
+-- parser_config.java.used_by = "apex"
 
 -- Additional Plugins
 lvim.plugins = {
   { 'chrisbra/csv.vim' },
   {'airblade/vim-gitgutter'},
-  {'lewis6991/gitsigns.nvim'},
-  -- {'azorng/apex-syntax.vim'}
+  -- {'lewis6991/gitsigns.nvim'},
+  {'nvim-treesitter/playground'},
+  {'folke/tokyonight.nvim'},
+    {'folke/trouble.nvim'}
 }
-
 --Autocommands (https://neovim.io/doc/user/autocmd.html)
 lvim.autocommands.custom_groups = {
-  { "BufWinEnter", "*.cls", "setlocal filetype=apexcode syntax=apex tabstop=4 softtabstop=4 shiftwidth=4 cindent"}
+  { "BufWinEnter", "*.cls", "setlocal tabstop=4 softtabstop=4 shiftwidth=4 cindent"}
 }

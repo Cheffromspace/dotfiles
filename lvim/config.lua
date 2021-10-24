@@ -77,6 +77,7 @@ lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
 
 lvim.builtin.cmp.sources = {
+  {name = "nvim_lsp"},
   {name = "gh_issues"},
   {name = "nvim_lua"},
   {name = "path"},
@@ -84,10 +85,15 @@ lvim.builtin.cmp.sources = {
   {name = "buffer", keyword_length = 4 }
 }
 
+
+
 lvim.builtin.cmp.experimental = {
   native_menu = false,
   ghost_menu = true
 }
+local formatters = require "lvim.lsp.null-ls.formatters"
+formatters.setup({{exe = "prettier", filetypes = {"apex"} }})
+lvim.format_on_save = true
 
 local lspconfig = require'lspconfig'
 local configs = require'lspconfig/configs'
@@ -99,6 +105,10 @@ if not lspconfig.apexls then
       cmd = apexCmd,
       filetypes = {'apex'},
       root_dir = require("lspconfig/util").root_pattern(".git", "package.json"),
+      on_attach = require("lvim.lsp").common_on_attach,
+      on_init = require("lvim.lsp").common_on_init,
+      capabilities = require("lvim.lsp").common_capabilities(),
+      formatters = { exe = 'prettier'},
       settings = {}
     }
   }
@@ -143,12 +153,11 @@ parser_config.java.used_by = "apex"
 
 -- Additional Plugins
 lvim.plugins = {
-  { 'chrisbra/csv.vim' },
+  {'chrisbra/csv.vim'},
   {'airblade/vim-gitgutter'},
-  -- {'lewis6991/gitsigns.nvim'},
   {'nvim-treesitter/playground'},
   {'folke/tokyonight.nvim'},
-    {'folke/trouble.nvim'}
+  {'folke/trouble.nvim'}
 }
 --Autocommands (https://neovim.io/doc/user/autocmd.html)
 lvim.autocommands.custom_groups = {

@@ -199,10 +199,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/jonflatt/.local/share/lunarvim/site/pack/packer/start/project.nvim"
   },
-  ["structlog.nvim"] = {
-    loaded = true,
-    path = "/home/jonflatt/.local/share/lunarvim/site/pack/packer/start/structlog.nvim"
-  },
   ["telescope-fzf-native.nvim"] = {
     loaded = true,
     path = "/home/jonflatt/.local/share/lunarvim/site/pack/packer/start/telescope-fzf-native.nvim"
@@ -273,7 +269,7 @@ vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Event lazy-loads
 time([[Defining lazy-load event autocommands]], true)
-vim.cmd [[au BufWinEnter * ++once lua require("packer.load")({'dashboard-nvim', 'toggleterm.nvim', 'barbar.nvim', 'which-key.nvim'}, { event = "BufWinEnter *" }, _G.packer_plugins)]]
+vim.cmd [[au BufWinEnter * ++once lua require("packer.load")({'toggleterm.nvim', 'which-key.nvim', 'barbar.nvim', 'dashboard-nvim'}, { event = "BufWinEnter *" }, _G.packer_plugins)]]
 vim.cmd [[au BufRead * ++once lua require("packer.load")({'gitsigns.nvim', 'Comment.nvim'}, { event = "BufRead *" }, _G.packer_plugins)]]
 time([[Defining lazy-load event autocommands]], false)
 vim.cmd("augroup END")

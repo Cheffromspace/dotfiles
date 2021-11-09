@@ -1,5 +1,6 @@
--- vim.lsp.set_log_level("debug")
+
 --[[
+-- vim.lsp.set_log_level("debug")
 lvim is the global options object
 
 Linters should be
@@ -10,6 +11,7 @@ an executable
 -- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
 
 -- general
+vim.opt.dictionary:append("/usr/share/dict/words")
 lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.colorscheme = "tokyonight"
@@ -18,7 +20,7 @@ lvim.colorscheme = "tokyonight"
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
-lvim.keys.normal_mode["<leader>,"] = ':lua require"nvim-sfdx"<cr>'
+-- lvim.keys.normal_mode["<leader>,"] = ':lua require"nvim-sfdx"<cr>'
 -- unmap a default keymapping
 -- lvim.keys.normal_mode["<C-Up>"] = ""
 -- edit a default keymapping
@@ -49,6 +51,18 @@ lvim.builtin.which_key.mappings["t"] = {
   w = { "<cmd>Trouble lsp_workspace_diagnostics<cr>", "Diagnostics" },
 }
 
+lvim.builtin.which_key.mappings["j"] = {
+  name = "Harpoon",
+  a = {'<cmd>lua require("harpoon.mark").add_file()<cr>', 'add file'},
+  m = {':lua require("harpoon.ui").toggle_quick_menu()<cr>', 'toggle menu'},
+  h = {':lua require("harpoon.ui").nav_file(1)<cr>', 'Index 1'},
+  j = {':lua require("harpoon.ui").nav_file(2)<cr>', 'Index 2'},
+  k = {':lua require("harpoon.ui").nav_file(3)<cr>', 'Index 3'},
+  l = {':lua require("harpoon.ui").nav_file(4)<cr>', 'Index 4'}
+}
+
+
+
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.builtin.dashboard.active = true
@@ -78,11 +92,11 @@ lvim.builtin.treesitter.highlight.enabled = true
 
 lvim.builtin.cmp.sources = {
   {name = "nvim_lsp"},
-  {name = "gh_issues"},
   {name = "nvim_lua"},
   {name = "path"},
   {name = "luasnip"},
-  {name = "buffer", keyword_length = 4 }
+  {name = "buffer", keyword_length = 4 },
+{name = "dictionary", keyword_length = 4 }
 }
 
 
@@ -157,8 +171,18 @@ lvim.plugins = {
   {'airblade/vim-gitgutter'},
   {'nvim-treesitter/playground'},
   {'folke/tokyonight.nvim'},
-  {'folke/trouble.nvim'}
+  {'folke/trouble.nvim'},
+  {'ThePrimeagen/harpoon'},
+  {'uga-rosa/cmp-dictionary'}
+  -- {'github/copilot.vim'}
 }
+
+-- lvim.keys.insert_mode['<right>'] = '<cmd>lua nvim_exec(copilot#Accept())<cr>'
+
+-- vim.api.nvim_exec([[
+--   imap <script><silent><nowait><expr> <right> <cmd> copilot#Accept()
+-- ]])
+-- <script><silent><nowait><expr> <Tab> copilot#Accept()
 --Autocommands (https://neovim.io/doc/user/autocmd.html)
 lvim.autocommands.custom_groups = {
   { "BufWinEnter", "*.cls", "setlocal tabstop=4 softtabstop=4 shiftwidth=4 cindent"}

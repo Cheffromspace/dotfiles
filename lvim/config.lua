@@ -11,15 +11,29 @@ an executable
 -- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
 
 -- general
+
 vim.opt.dictionary:append("/usr/share/dict/words")
 lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.colorscheme = "tokyonight"
+-- nvim.clipboard = 'win32yank'
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+
+
+lvim.keys.normal_mode["<F15>"] = '<cmd>luarequire("harpoon.ui").toggle_quick_menu()<cr>'
+-- lvim.keys.normal_mode["<F15>"] = '<cmd>luarequire("harpoon.ui").toggle_quick_menu()<cr>'
+-- lvim.keys.normal_mode["<F15>"] = '<cmd>luarequire("harpoon.ui").toggle_quick_menu()<cr>'
+-- lvim.keys.normal_mode["<F15>"] = '<cmd>luarequire("harpoon.ui").toggle_quick_menu()<cr>'
+-- Better window movement
+lvim.keys.normal_mode["<A-n>"] = "<C-w>h"
+lvim.keys.normal_mode["<A-e>"] = "<C-w>j"
+lvim.keys.normal_mode["<A-i>"] = "<C-w>k"
+lvim.keys.normal_mode["<A-o>"] = "<C-w>l"
+
 -- lvim.keys.normal_mode["<leader>,"] = ':lua require"nvim-sfdx"<cr>'
 -- unmap a default keymapping
 -- lvim.keys.normal_mode["<C-Up>"] = ""
@@ -50,18 +64,37 @@ lvim.builtin.which_key.mappings["t"] = {
   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
   w = { "<cmd>Trouble lsp_workspace_diagnostics<cr>", "Diagnostics" },
 }
+-- lvim.builtin.which_key.mappings["j"] = {
+--   name = "Harpoon",
+--   a = {'<cmd>lua require("harpoon.mark").add_file()<cr>', 'add file'},
+--   m = {'<cmd>luarequire("harpoon.ui").toggle_quick_menu()<cr>', 'toggle menu'},
+--   h = {'<cmd>luarequire("harpoon.ui").nav_file(1)<cr>', 'Index 1'},
+--   j = {'<cmd>luarequire("harpoon.ui").nav_file(2)<cr>', 'Index 2'},
+--   k = {'<cmd>luarequire("harpoon.ui").nav_file(3)<cr>', 'Index 3'},
+--   l = {'<cmd>luarequire("harpoon.ui").nav_file(4)<cr>', 'Index 4'}
+-- }
+lvim.keys.normal_mode["F15"] = '<cmd>luarequire("harpoon.ui").nav_file(1)<cr>'
+lvim.keys.normal_mode["F16"] = '<cmd>luarequire("harpoon.ui").nav_file(2)<cr>'
+lvim.keys.normal_mode["F17"] = '<cmd>luarequire("harpoon.ui").nav_file(3)<cr>'
+lvim.keys.normal_mode["F18"] = '<cmd>luarequire("harpoon.ui").nav_file(4)<cr>'
 
 lvim.builtin.which_key.mappings["j"] = {
-  name = "Harpoon",
-  a = {'<cmd>lua require("harpoon.mark").add_file()<cr>', 'add file'},
-  m = {':lua require("harpoon.ui").toggle_quick_menu()<cr>', 'toggle menu'},
-  h = {':lua require("harpoon.ui").nav_file(1)<cr>', 'Index 1'},
-  j = {':lua require("harpoon.ui").nav_file(2)<cr>', 'Index 2'},
-  k = {':lua require("harpoon.ui").nav_file(3)<cr>', 'Index 3'},
-  l = {':lua require("harpoon.ui").nav_file(4)<cr>', 'Index 4'}
+  name = "jettings",
+  t = {'<cmd>TransparentToggle<cr>', 'TransparentToggle'},
 }
 
+lvim.builtin.which_key.mappings["m"] = {
+  name = "Macros",
+  d = {'A<BS>r:\\DAS_SFDC_ID__c<esc>', 'DAS_SFDC_ID__c'},
+  m = {'I<members><esc>A</members><esc>:', '<members>'},
+}
 
+lvim.builtin.which_key.mappings["y"] = {
+  name = "Symbols",
+  c = {'i<esc>', ''},
+  e = {'i<esc>', ''},
+  d = {'i<esc>', ''}
+}
 
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
@@ -69,8 +102,6 @@ lvim.builtin.dashboard.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.show_icons.git = 0
-
-
 
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
@@ -96,15 +127,14 @@ lvim.builtin.cmp.sources = {
   {name = "path"},
   {name = "luasnip"},
   {name = "buffer", keyword_length = 4 },
-{name = "dictionary", keyword_length = 4 }
+  {name = "dictionary", keyword_length = 4 }
 }
-
-
 
 lvim.builtin.cmp.experimental = {
   native_menu = false,
   ghost_menu = true
 }
+
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup({{exe = "prettier", filetypes = {"apex"} }})
 lvim.format_on_save = true
@@ -122,7 +152,7 @@ if not lspconfig.apexls then
       on_attach = require("lvim.lsp").common_on_attach,
       on_init = require("lvim.lsp").common_on_init,
       capabilities = require("lvim.lsp").common_capabilities(),
-      formatters = { exe = 'prettier'},
+      formatters = { exe = 'prettier' },
       settings = {}
     }
   }
@@ -130,40 +160,17 @@ end
 lspconfig.apexls.setup{}
 
 --Powershel LSP
-lspconfig.powershell_es.setup{
+if not lspconfig.powershell_es then
+  configs.powershell_es = {
+      setup = {
   bundle_path = '/home/jonflatt/languageServers/Powershell',
-}
+    }
+  }
+end
+
 --Powershell treesitter
 local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 parser_config.java.used_by = "apex"
--- parser_config.powershell = {
---   install_info = {
---     url = "https://github.com/jrsconfitto/tree-sitter-powershell",
---     files = {"src/parser.c"}
---   },
---   filetype = "ps1",
---   used_by = { "psm1", "psd1", "pssc", "psxml", "cdxml" }
--- }
-
--- local query = vim.treesitter.parse_query('java', [[
---   -- (method_declaratio
---   --   (modifiers
---   --     (marker_annotation
---   --       name: (identifier) @annotation
---   --         (#match? @annotation "^[iI][sS][tT][eE][sS][tT]$")))
---   --   name: (identifier) @method (#offset! @method))
---   -- ]])
--- parser_config.apex = {
---   install_info = {
---     url = "~/source/tree-sitter-apex/",
---     files = {"src/parser.c"}
---   },
---   filetype = "apex",
---   used_by = { "apex" }
--- }
--- parser_config.java.used_by = {'apex'}
-
--- parser_config.java.used_by = "apex"
 
 -- Additional Plugins
 lvim.plugins = {
@@ -173,9 +180,14 @@ lvim.plugins = {
   {'folke/tokyonight.nvim'},
   {'folke/trouble.nvim'},
   {'ThePrimeagen/harpoon'},
-  {'uga-rosa/cmp-dictionary'}
+  {'uga-rosa/cmp-dictionary'},
+  {'Cheffromspace/nvim-sfdx'},
+  {'norcalli/nvim-colorizer.lua'},
+  {'xiyaowong/nvim-transparent'}
   -- {'github/copilot.vim'}
 }
+
+require'colorizer'.setup()
 
 -- lvim.keys.insert_mode['<right>'] = '<cmd>lua nvim_exec(copilot#Accept())<cr>'
 

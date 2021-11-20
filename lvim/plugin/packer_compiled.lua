@@ -160,7 +160,7 @@ _G.packer_plugins = {
     config = { "\27LJ\2\2?\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\22lvim.core.lualine\frequire\0" },
     loaded = true,
     path = "/home/jonflatt/.local/share/lunarvim/site/pack/packer/start/lualine.nvim",
-    url = "https://github.com/shadmansaleh/lualine.nvim"
+    url = "https://github.com/nvim-lualine/lualine.nvim"
   },
   ["nlsp-settings.nvim"] = {
     loaded = true,
@@ -184,6 +184,11 @@ _G.packer_plugins = {
     path = "/home/jonflatt/.local/share/lunarvim/site/pack/packer/start/nvim-cmp",
     url = "https://github.com/hrsh7th/nvim-cmp"
   },
+  ["nvim-colorizer.lua"] = {
+    loaded = true,
+    path = "/home/jonflatt/.local/share/lunarvim/site/pack/packer/start/nvim-colorizer.lua",
+    url = "https://github.com/norcalli/nvim-colorizer.lua"
+  },
   ["nvim-lsp-installer"] = {
     loaded = true,
     path = "/home/jonflatt/.local/share/lunarvim/site/pack/packer/start/nvim-lsp-installer",
@@ -193,6 +198,16 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/jonflatt/.local/share/lunarvim/site/pack/packer/start/nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
+  },
+  ["nvim-sfdx"] = {
+    loaded = true,
+    path = "/home/jonflatt/.local/share/lunarvim/site/pack/packer/start/nvim-sfdx",
+    url = "https://github.com/Cheffromspace/nvim-sfdx"
+  },
+  ["nvim-transparent"] = {
+    loaded = true,
+    path = "/home/jonflatt/.local/share/lunarvim/site/pack/packer/start/nvim-transparent",
+    url = "https://github.com/xiyaowong/nvim-transparent"
   },
   ["nvim-tree.lua"] = {
     config = { "\27LJ\2\2@\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\23lvim.core.nvimtree\frequire\0" },

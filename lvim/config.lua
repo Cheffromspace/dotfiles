@@ -1,6 +1,6 @@
 
---[[
 -- vim.lsp.set_log_level("debug")
+--[[
 lvim is the global options object
 
 Linters should be
@@ -21,18 +21,90 @@ lvim.colorscheme = "tokyonight"
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
 -- add your own keymapping
-lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+  lvim.keys = {
+    ---@usage change or add keymappings for insert mode
+    insert_mode = {
+      ["<A-e>"] = "<Esc>:m .+1<CR>==gi",
+      ["<A-i>"] = "<Esc>:m .-2<CR>==gi",
+      -- navigation
+      -- ["<A-Up>"] = "<C-\\><C-N><C-w>k",
+      -- ["<A-Down>"] = "<C-\\><C-N><C-w>j",
+      -- ["<A-Left>"] = "<C-\\><C-N><C-w>h",
+      -- ["<A-Right>"] = "<C-\\><C-N><C-w>l",
+    },
+
+    ---@usage change or add keymappings for normal mode
+    normal_mode = {
+      ["<C-s>"] = ":w<cr>",
+      ["<F15>"] = '<cmd>luarequire("harpoon.ui").toggle_quick_menu()<cr>',
+      -- Better window movement
+      ["{"] = "<C-w>h",
+      ["_"] = "<C-w>j",
+      ["!"] = "<C-w>k",
+      ["*"] = "<C-w>l",
+
+      -- Tab switch buffer
+      ["<A-n>"] = ":BufferNext<CR>",
+      ["<A-o>"] = ":BufferPrevious<CR>",
+      -- Move current line / block with Alt-j/k a la vscode.
+      ["<A-e>"] = ":m .+1<CR>==",
+    ["<A-i>"] = ":m .-2<CR>==",
+
+      -- insert empty line below/above without going into insert mode
+      ["m"] = "yyp0D",
+      ["M"] = "yykp0D",
+
+      -- Resize with arrows
+      ["<A-I>"] = ":resize -2<CR>",
+      ["<A-E>"] = ":resize +2<CR>",
+      ["<A-N>"] = ":vertical resize -2<CR>",
+    ["<A-O>"] = ":vertical resize +2<CR>",
 
 
-lvim.keys.normal_mode["<F15>"] = '<cmd>luarequire("harpoon.ui").toggle_quick_menu()<cr>'
--- lvim.keys.normal_mode["<F15>"] = '<cmd>luarequire("harpoon.ui").toggle_quick_menu()<cr>'
--- lvim.keys.normal_mode["<F15>"] = '<cmd>luarequire("harpoon.ui").toggle_quick_menu()<cr>'
--- lvim.keys.normal_mode["<F15>"] = '<cmd>luarequire("harpoon.ui").toggle_quick_menu()<cr>'
--- Better window movement
-lvim.keys.normal_mode["<A-n>"] = "<C-w>h"
-lvim.keys.normal_mode["<A-e>"] = "<C-w>j"
-lvim.keys.normal_mode["<A-i>"] = "<C-w>k"
-lvim.keys.normal_mode["<A-o>"] = "<C-w>l"
+      -- QuickFix
+      ["]q"] = ":cnext<CR>",
+      ["[q"] = ":cprev<CR>",
+      ["<C-q>"] = ":call QuickFixToggle()<CR>",
+    },
+
+    ---@usage change or add keymappings for terminal mode
+    term_mode = {
+      -- Terminal window navigation
+      ["<C-h>"] = "<C-\\><C-N><C-w>h",
+      ["<C-j>"] = "<C-\\><C-N><C-w>j",
+      ["<C-k>"] = "<C-\\><C-N><C-w>k",
+      ["<C-l>"] = "<C-\\><C-N><C-w>l",
+    },
+
+    ---@usage change or add keymappings for visual mode
+    visual_mode = {
+      -- Better indenting
+      ["<"] = "<gv",
+      [">"] = ">gv",
+
+      -- ["p"] = '"0p',
+      -- ["P"] = '"0P',
+    },
+
+    ---@usage change or add keymappings for visual block mode
+    visual_block_mode = {
+      -- Move selected line / block of text in visual mode
+      ["I"] = ":move '<-2<CR>gv-gv",
+      ["E"] = ":move '>+1<CR>gv-gv",
+
+      -- Move current line / block with Alt-j/k ala vscode.
+      ["<A-e>"] = ":m '>+1<CR>gv-gv",
+      ["<A-i>"] = ":m '<-2<CR>gv-gv",
+    },
+
+    ---@usage change or add keymappings for command mode
+    command_mode = {
+      -- navigate tab completion with <c-j> and <c-k>
+      -- runs conditionally
+      ["<C-j>"] = { 'pumvisible() ? "\\<C-n>" : "\\<C-j>"', { expr = true, noremap = true } },
+      ["<C-k>"] = { 'pumvisible() ? "\\<C-p>" : "\\<C-k>"', { expr = true, noremap = true } },
+    },
+  }
 
 -- lvim.keys.normal_mode["<leader>,"] = ':lua require"nvim-sfdx"<cr>'
 -- unmap a default keymapping
